@@ -4,19 +4,6 @@
 
 export default {
   async fetch(request, env) {
-    const url = new URL(request.url);
-
-    // デバッグ用: Secretsが読み込めているか文字数だけ確認（値は表示しない）
-    // 確認できたら、この if ブロックは削除してください
-    if (url.pathname === "/debug-auth") {
-      const userLen = (env.BASIC_AUTH_USER || "").length;
-      const passLen = (env.BASIC_AUTH_PASS || "").length;
-      return new Response(
-        `BASIC_AUTH_USER: ${userLen === 0 ? "未設定(空)" : userLen + "文字"}\n` +
-        `BASIC_AUTH_PASS: ${passLen === 0 ? "未設定(空)" : passLen + "文字"}`
-      );
-    }
-
     const authHeader = request.headers.get("Authorization");
 
     // Secretsの前後に余分な空白・改行が入っていても比較できるようtrim
@@ -37,3 +24,4 @@ export default {
     return env.ASSETS.fetch(request);
   },
 };
+
